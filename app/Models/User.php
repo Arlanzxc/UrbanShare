@@ -29,4 +29,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // В файле app/Models/User.php
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(Item::class);
+    }
+
+    public function bookings(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(Booking::class);
+    }
 }
