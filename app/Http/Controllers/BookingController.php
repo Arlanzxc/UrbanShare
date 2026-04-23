@@ -14,6 +14,10 @@ class BookingController extends Controller
 {
     public function store(Request $request, Item $item): RedirectResponse
     {
+        if ($item->user_id === Auth::id()) {
+            abort(403, 'You cannot book your own tool.');
+        }
+        
         $request->validate([
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',

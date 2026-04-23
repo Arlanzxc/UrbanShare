@@ -24,7 +24,7 @@ class ItemStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'min:10'],
+            'description' => ['nullable', 'string'],
             'price_per_day' => ['required', 'numeric', 'min:0'],
             'category' => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
