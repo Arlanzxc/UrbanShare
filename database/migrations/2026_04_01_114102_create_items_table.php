@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('price_per_day', 8, 2);
             $table->string('category');
             $table->string('image_path')->nullable();
