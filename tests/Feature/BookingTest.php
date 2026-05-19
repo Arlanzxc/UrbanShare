@@ -22,8 +22,8 @@ class BookingTest extends TestCase
         $renter = User::factory()->create();
 
         $response = $this->actingAs($renter)->post("/items/{$item->id}/bookings", [
-            'start_date' => '2026-05-01',
-            'end_date' => '2026-05-05',
+            'start_date' => '2026-06-01',
+            'end_date' => '2026-06-05',
         ]);
 
         $response->assertStatus(302); 
@@ -42,8 +42,8 @@ class BookingTest extends TestCase
         $item = Item::factory()->create(['user_id' => $owner->id]);
 
         $response = $this->actingAs($owner)->post("/items/{$item->id}/bookings", [
-            'start_date' => '2026-05-01',
-            'end_date' => '2026-05-05',
+            'start_date' => '2026-06-01',
+            'end_date' => '2026-06-05',
         ]);
 
         $response->assertStatus(403); 
@@ -64,18 +64,18 @@ class BookingTest extends TestCase
         Booking::create([
             'item_id' => $item->id,
             'user_id' => $renter1->id,
-            'start_date' => '2026-05-10',
-            'end_date' => '2026-05-15',
+            'start_date' => '2026-06-10',
+            'end_date' => '2026-06-15',
             'status' => 'pending'
         ]);
 
         $response = $this->actingAs($renter2)->post("/items/{$item->id}/bookings", [
-            'start_date' => '2026-05-12', 
-            'end_date' => '2026-05-18',
+            'start_date' => '2026-06-12', 
+            'end_date' => '2026-06-18',
         ]);
 
         $response->assertSessionHasErrors();
 
-        $this->assertEquals(1, Booking::where('item_id', $item->id)->count());
+        $this->assertEquals(1, Booking::query()->where('item_id', $item->id)->count());
     }
 }

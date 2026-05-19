@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Booking extends Model
+class Review extends Model
 {
-    protected $fillable = ['user_id', 'item_id', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['booking_id', 'item_id', 'user_id', 'rating', 'comment'];
 
     public function user(): BelongsTo
     {
@@ -20,8 +19,8 @@ class Booking extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public function review(): HasOne
+    public function booking(): BelongsTo
     {
-        return $this->hasOne(Review::class);
+        return $this->belongsTo(Booking::class);
     }
 }

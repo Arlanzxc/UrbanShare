@@ -11,10 +11,14 @@ use Illuminate\Http\RedirectResponse;
 
 class ItemController extends Controller
 {
+    
     public function index(): View
     {
         $items = Item::with('user')
             ->where('user_id', '!=', Auth::id())
+            ->whereDoesntHave('bookings', function ($query) {
+                $query->where('status', 'approved');
+            })
             ->latest()
             ->paginate(12);
 
@@ -36,7 +40,7 @@ class ItemController extends Controller
 
         Auth::user()->items()->create($validated);
 
-        return redirect()->route('items.index')->with('status', 'Tool listed successfully!');
+        return redirect()->route('dashboard')->with('status', 'Tool listed successfully!');
     }
 
     public function show(Item $item): View
@@ -52,6 +56,7 @@ class ItemController extends Controller
         return view('items.edit', compact('item'));
     }
 
+    
     public function update(ItemStoreRequest $request, Item $item): RedirectResponse
     {
         if ($item->user_id !== Auth::id()) {
@@ -69,7 +74,7 @@ class ItemController extends Controller
 
         $item->update($validated);
 
-        return redirect()->route('items.index')->with('status', 'Item updated!');
+        return redirect()->route('dashboard')->with('status', 'Item updated successfully!');
     }
 
     public function destroy(Item $item): RedirectResponse
@@ -84,6 +89,6 @@ class ItemController extends Controller
 
         $item->delete();
 
-        return redirect()->route('items.index')->with('status', 'Item removed!');
+        return redirect()->route('dashboard')->with('status', 'Item removed successfully!');
     }
 }
